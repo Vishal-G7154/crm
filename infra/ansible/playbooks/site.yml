@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - role: common
+
+- hosts: web
+  become: yes
+  roles:
+    - role: app

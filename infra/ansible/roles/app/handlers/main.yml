@@ -1,0 +1,5 @@
+---
+- name: restart crm app
+  docker_container:
+    name: crm
+    state: restarted

@@ -1,0 +1,8 @@
+---
+- name: Ensure base packages are installed
+  package:
+    name:
+      - git
+      - curl
+      - docker.io
+    state: present

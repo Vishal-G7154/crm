@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron">
+  <h1 class="display-4">Welcome to CRM</h1>
+  <p class="lead">Customer Relationship Management System</p>
+  <hr class="my-4">
+  <p>Manage your customers, leads, and sales pipeline effectively.</p>
+  <a class="btn btn-primary btn-lg" href="{{ url_for(auth.login_page) }}" role="button">Get Started</a>
+</div>
+{% endblock %}

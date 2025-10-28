@@ -1,0 +1,5 @@
+---
+- name: Run monitoring stack via docker compose
+  community.docker.docker_compose:
+    project_src: /opt/monitoring
+    state: present

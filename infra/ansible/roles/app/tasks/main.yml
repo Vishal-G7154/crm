@@ -1,0 +1,10 @@
+---
+- name: Deploy CRM container
+  community.docker.docker_container:
+    name: crm
+    image: ghcr.io/your-org/crm:latest
+    restart_policy: unless-stopped
+    env:
+      DATABASE_URL: "{{ database_url | default(postgresql+psycopg2://crm:crm@db:5432/crm) }}"
+    published_ports:
+      - "80:8000"

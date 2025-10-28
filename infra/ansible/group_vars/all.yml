@@ -1,0 +1,9 @@
+---
+# Global variables
+environment: dev
+app_name: crm
+app_port: 8000
+database_url: "postgresql+psycopg2://crm:crm@localhost:5432/crm"
+
+# Docker settings
+docker_compose_version: "2.20.0"

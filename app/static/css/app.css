@@ -1,0 +1,21 @@
+body { 
+  padding-bottom: 40px; 
+  background-color: #f8f9fa;
+}
+
+.jumbotron {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.navbar-brand {
+  font-weight: bold;
+}
+
+.card {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
