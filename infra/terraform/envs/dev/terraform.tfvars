@@ -1,9 +1,6 @@
-region = "us-east-1"
-environment = "dev"
-vpc_cidr_block = "10.10.0.0/16"
-public_subnet_cidrs = ["10.10.1.0/24", "10.10.2.0/24"]
-private_subnet_cidrs = ["10.10.10.0/24", "10.10.20.0/24"]
-instance_type = "t3.micro"
-key_name = "crm-dev-key"
-bucket_name = "crm-dev-storage"
-repository_name = "crm-dev"
+aws_region     = "ap-south-1"
+aws_profile    = "default"
+ami_id         = "ami-03695d52f0d883f65"
+instance_type  = "t2.micro"
+key_name = "client1-crm-dev-key"  # replace with your key pair name
+instance_name  = "DevEC2"

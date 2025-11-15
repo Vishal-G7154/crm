@@ -1,14 +1,6 @@
 output "instance_id" {
-  description = "ID of the EC2 instance"
-  value       = aws_instance.app.id
+  value = aws_instance.ec2.id
 }
-
 output "public_ip" {
-  description = "Public IP of the EC2 instance"
-  value       = aws_eip.app.public_ip
-}
-
-output "private_ip" {
-  description = "Private IP of the EC2 instance"
-  value       = aws_instance.app.private_ip
+  value = aws_instance.ec2.public_ip
 }
