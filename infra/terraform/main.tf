@@ -13,40 +13,6 @@ provider "aws" {
   region  = var.aws_region
   profile = var.aws_profile
 }
-resource "aws_security_group" "allow_ssh_ping" {
-  name        = "allow_ssh_ping"
-  description = "Allow SSH and ping (ICMP) inbound traffic"
-
-  # Allow SSH (port 22)
-  ingress {
-    description = "SSH from anywhere"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # Allow Ping (ICMP)
-  ingress {
-    description = "Allow ping"
-    from_port   = -1
-    to_port     = -1
-    protocol    = "icmp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # Allow all outbound traffic
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "allow-ssh-ping"
-  }
-}
 
 
 resource "aws_instance" "demo" {
@@ -57,4 +23,68 @@ resource "aws_instance" "demo" {
   tags = {
     Name = var.instance_name
   }
+}
+
+variable "sg_name" {
+  default = "allow_ssh_ping"
+}
+
+variable "sg_description" {
+  default = "Allow SSH and ping (ICMP) inbound traffic"
+}
+
+# SSH rule
+variable "ssh_description" {
+  default = "SSH from anywhere"
+}
+
+variable "ssh_from_port" {
+  default = 22
+}
+
+variable "ssh_to_port" {
+  default = 22
+}
+
+variable "ssh_cidr_blocks" {
+  default = ["0.0.0.0/0"]
+}
+
+# ICMP rule
+variable "icmp_description" {
+  default = "Allow ping"
+}
+
+variable "icmp_from_port" {
+  default = -1
+}
+
+variable "icmp_to_port" {
+  default = -1
+}
+
+variable "icmp_cidr_blocks" {
+  default = ["0.0.0.0/0"]
+}
+
+# Egress
+variable "egress_from_port" {
+  default = 0
+}
+
+variable "egress_to_port" {
+  default = 0
+}
+
+variable "egress_protocol" {
+  default = "-1"
+}
+
+variable "egress_cidr_blocks" {
+  default = ["0.0.0.0/0"]
+}
+
+# Tags
+variable "sg_tag_name" {
+  default = "allow-ssh-ping"
 }
