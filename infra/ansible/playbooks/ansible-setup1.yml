@@ -1,0 +1,87 @@
+---
+# Flask app environment setup on AWS EC2
+
+
+- name:   Setup Flask + PostgreSQL environment on EC2
+  hosts:  localhost
+  connection: local
+  become: true
+  become_flags: '-H -S -n'   # ✅ prevents ACL permission issues
+  vars:
+    app_dir: /home/ubuntu/crm-project
+    # repo_url: "https://github.com/soniaNegi13/crm-project.git"
+    repo_url: "https://soniaNegi13:<token>@github.com/soniaNegi13/crm_project.git"
+    venv_path: "{{ app_dir}}/venv"
+    flask_port: 5000
+     # Database configuration
+    db_name: crm_db
+    db_user: crm_user
+    db_password: 123
+
+  tasks:
+    - name: Update and upgrade apt packages
+      apt:
+       update_cache: yes
+       upgrade: yes
+
+    - name: Install required packages
+      apt:
+        name:
+         - python3
+         - python3-pip
+         - python3-venv
+         - git
+         - python3-psycopg2
+         - postgresql
+         - postgresql-contrib
+        state: present
+
+    - name: Ensure postgresql is running
+      service:
+          name: postgresql
+          state: started
+          enabled: yes
+    # ✅ Create PostgreSQL user (without using become_user)
+    - name: Create PostgreSQL user
+      become_user: postgres
+      community.postgresql.postgresql_user:
+        name: "{{ db_user }}"
+        password: "{{ db_password }}"
+        login_user: postgres
+
+    # ✅ Create PostgreSQL database
+    - name: Create PostgreSQL database
+      become_user: postgres
+      community.postgresql.postgresql_db:
+        name: "{{ db_name }}"
+        owner: "{{ db_user }}"
+        login_user: postgres
+
+
+    - name: Clone Flask application repository
+      git:
+       repo: "{{ repo_url}}"
+       dest: "{{ app_dir }}"
+       version: set_13
+       force: yes
+
+    - name: Create virtual environment
+      command: python3 -m venv "{{ venv_path }}"
+      args:                                                           #args: modifies how the module runs.
+        creates: "{{ venv_path }}/bin/activate"                       # creates: tells Ansible not to re-run this command if that file already exists.
+
+
+    - name: Install Python dependencies
+      command: "{{ venv_path }}/bin/pip install -r requirements.txt"
+      args:
+        chdir: "{{ app_dir }}"
+
+
+
+    - name: Verify Flask installation
+      command: "{{ venv_path }}/bin/python -m flask --version"
+      register: flask_check
+
+
+    - debug:
+        msg: "✅ Flask setup complete: {{ flask_check.stdout }}"

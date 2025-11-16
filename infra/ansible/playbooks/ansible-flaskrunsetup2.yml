@@ -1,0 +1,40 @@
+---
+- name: Setup Flask systemd service
+  hosts: localhost
+  become: true
+
+  vars:
+    app_dir: /home/ubuntu/crm-project
+    venv_path: "{{ app_dir }}/venv"
+    flask_port: 5000
+
+
+  tasks:
+   - name: Create systemd service for Flask app
+     copy:
+       dest: /etc/systemd/system/flaskapp.service
+       content: |
+          [Unit]
+          Description=Flask CRM App
+          After=network.target
+
+          [Service]
+          User=ubuntu
+          WorkingDirectory={{ app_dir }}
+          ExecStart={{ venv_path }}/bin/python3 {{ app_dir }}/app.py
+          Restart=always
+          Environment=FLASK_ENV=production
+          Environment=PORT={{ flask_port }}
+
+          [Install]
+          WantedBy=multi-user.target
+
+   - name: Reload systemd daemon
+     command: systemctl daemon-reload
+
+   - name: Enable and start Flask service
+     systemd:
+        name: flaskapp
+        enabled: true
+        state: started
+

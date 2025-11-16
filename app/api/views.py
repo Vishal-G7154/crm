@@ -18,7 +18,7 @@ def get_users():
 def create_user():
     data = request.get_json()
     return jsonify({"message": "User created", "data": data}), 201
-@api_bp.route("/enquiry", methods=['GET','POST'])
+@api_bp.route("/enquiry", methods=['GET','POST'])                                 ####
 def enquiry_form():
     if request.method == 'POST':
         name  = request.form['name']
@@ -34,6 +34,6 @@ def enquiry_form():
 
         return render_template('enquiry_form.html', success=True, name=name)
     else:
-        return render_template('enquiry_form.html', success=False)   
+        return render_template('enquiry_form.html', success=False)                   ###
 
  
